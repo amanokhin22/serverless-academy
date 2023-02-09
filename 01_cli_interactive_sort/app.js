@@ -7,14 +7,24 @@ const prompt = (query) => new Promise((resolve) => rl.question(query, resolve));
     try {
         while (true) {
             const words = await prompt("Hello. Enter 10 words or digits them in spaces: ");
+
+            if (!words.trim()) {
+                rl.write("Please enter at least one symbol \n")
+                continue
+            }
             const arrayWords = words.split(" ")
             if (words === "exit") {
                 break
             }
-            if (words === "") {
-                rl.write("Please enter at least one symbol \n")
+            if (arrayWords.length < 2) {
+                rl.write("Please enter more words or digits \n")
                 continue
             }
+            if (arrayWords.length > 10) {
+                rl.write("No more than 10 words or digits \n")
+                continue
+            }
+
             const operation = await prompt(
                 `Please type number from 1 to 6 to choose an operation
 1. Sort words alphabetically 

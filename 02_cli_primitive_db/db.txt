@@ -1,0 +1,3 @@
+
+{"name":"Artiom","sex":"male","age":"34"}
+{"name":"Vicious","sex":"male","age":"72"}
