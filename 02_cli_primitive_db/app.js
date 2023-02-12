@@ -2,11 +2,12 @@ import inquirer from "inquirer";
 import * as fs from "fs";
 
 const DB_FILE = "db.txt";
-const createDbIfNotExists = () => {
-    if (!fs.existsSync(DB_FILE)) {
-        fs.writeFileSync(DB_FILE, "");
-    }
-}
+// It seems to work even without this code, creating a txt file and json in it, but I didn’t test deeply
+// const createDbIfNotExists = () => {
+//     if (!fs.existsSync(DB_FILE)) {
+//         fs.writeFileSync(DB_FILE, "");
+//     }
+// }
 const fillUsers = async () => {
     const EXIT_CONDITION = "";
     const user = await inquirer
@@ -95,7 +96,7 @@ const filterUsers = async () => {
 }
 
 const appStart = async () => {
-    createDbIfNotExists();
+    //createDbIfNotExists();
     await fillUsers();
 
     const {wantToSearchDB} = await confirmSearch();
