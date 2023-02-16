@@ -12,14 +12,14 @@ program
 program.command("send-message")
     .description("Send message to telegram bot")
     .argument("<string>", "Your message")
-    .action((str, options) => {
+    .action((str) => {
         bot.sendMessage(122919870, str);
     })
 
 program.command("send-photo")
     .description("Send photo to telegram bot")
     .argument("<string>", "Your photo")
-    .action((photo, options) => {
+    .action((photo) => {
         bot.sendPhoto(122919870, photo);
     })
 
