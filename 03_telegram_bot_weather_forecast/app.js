@@ -69,6 +69,9 @@ bot.on('message', (msg) => {
                         {text: '6 hours'}
                     ],
                     [
+                        {text: 'WIND'},
+                    ],
+                    [
                         {text: "Back"}
                     ]
                 ],
@@ -97,6 +100,18 @@ bot.on('message', async (msg) => {
         bot.sendMessage(msg.chat.id, data);
     }
 });
+bot.on('message', async (msg) => {
+    let data = `Weather in ${CITY_NAME}` + '\n';
+    const wind = await getForecast()
+    if (msg.text === 'WIND')
+    {
+        wind.find(report => {
+            data += `
+Wind speed: ${report.wind.speed} m/s`
+        })
+        bot.sendMessage(msg.chat.id, data);
+    }
+})
 
 function farToCelsius(farValue) {
     return (farValue - 273.15).toFixed(2);
