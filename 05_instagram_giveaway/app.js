@@ -1,12 +1,12 @@
 const fs = require('fs').promises;
-const main = async () => {
+async function main() {
     console.time('run');
 
     const data = await getData();
     const entries = getEntries(data);
 
     console.time('uniqueValues');
-    uniqueValues(data.flat(1));
+    uniqueValues(data.flat());
     console.timeEnd("uniqueValues");
 
     console.time('existInAllFiles');
@@ -21,21 +21,19 @@ const main = async () => {
 }
 
 main();
-
-async function getData()  {
+async function getData() {
     const files = await fs.readdir(`${__dirname}/files`);
     const readers = [];
     files.forEach(fileName => {
         readers.push(fs.readFile(`${__dirname}/files/${fileName}`, 'utf-8'))
     })
-    const rawData = await Promise.all(readers);
+    const filesContent = await Promise.all(readers);
     const result = [];
-    rawData.forEach(rawDataArray => {
-        result.push(rawDataArray.split('\n'))
+    filesContent.forEach(content => {
+        result.push(content.split('\n'))
     })
     return result;
 }
-
 const getEntries = (data) => {
     const entriesObject = {};
     data.forEach(array => {
@@ -49,16 +47,13 @@ const getEntries = (data) => {
     })
     return Object.values(entriesObject);
 }
-
 const uniqueValues = (data) => {
     console.log('uniqueValues', new Set(data).size);
 }
-
 const existInAllFiles = (entries) => {
     const result = entries.filter(value => value === 20).length
     console.log('existInAllFiles', result);
 }
-
 const existInAtLeastTen = (entries) => {
     const result = entries.filter(value => value >= 10).length
     console.log('existInAtLeastTen', result);
