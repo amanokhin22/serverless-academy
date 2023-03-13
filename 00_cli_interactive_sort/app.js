@@ -1,4 +1,12 @@
 const readline = require('readline');
+const {
+    getSortedAlphabetically,
+    getNumbersFromLesserToGreater,
+    getNumbersFromBiggerToSmaller,
+    getWordsAscendingByNumbersOfLetter,
+    getUniqueWords,
+    getUniqueValuesOfWordsAndNumbers
+} = require('./handlers');
 
 const rl = readline.createInterface({input: process.stdin, output: process.stdout});
 const prompt = (query) => new Promise((resolve) => rl.question(query, resolve));
@@ -24,7 +32,6 @@ const prompt = (query) => new Promise((resolve) => rl.question(query, resolve));
                 rl.write("No more than 10 words or digits \n")
                 continue
             }
-
             const operation = await prompt(
                 `Please type number from 1 to 6 to choose an operation
 1. Sort words alphabetically 
@@ -37,53 +44,26 @@ To exit the program, the user need to enter exit, otherwise the program will rep
             );
             switch (operation) {
                 case "1":
-                    const output = arrayWords
-                        .filter((item) => !/^[+-]?\d+(\.\d+)?$/.test(item))
-                        .sort((a, b) => {
-                            if (a.toLowerCase() > b.toLowerCase()) {
-                                return 1
-                            } else if (a.toLowerCase() < b.toLowerCase()) {
-                                return -1
-                            }
-                            return 0
-                        })
-                    console.log(output.join(" "))
+                    console.log(getSortedAlphabetically(arrayWords));
                     break;
                 case "2": {
-                    const output = arrayWords
-                        .filter((item) => Number(item))
-                        .sort((a, b) => a - b)
-                        .map(item => +item)
-                        .join(" ")
-                    console.log(output)
+                    console.log(getNumbersFromLesserToGreater(arrayWords))
                     break;
                 }
                 case "3": {
-                    const output = arrayWords
-                        .filter((item) => Number(item))
-                        .sort((a, b) => b - a)
-                        .map(item => +item)
-                        .join(" ")
-                    console.log(output)
+                    console.log(getNumbersFromBiggerToSmaller(arrayWords))
                     break;
                 }
                 case "4": {
-                    const output =
-                        arrayWords
-                            .sort((a, b) => a.length - b.length)
-                            .join(" ")
-                    console.log(output)
+                    console.log(getWordsAscendingByNumbersOfLetter(arrayWords))
                     break;
                 }
                 case "5": {
-                    const output = Array.from(new Set(arrayWords))
-                        .filter(item => !Number(item))
-                    console.log(output.join(" "))
+                    console.log(getUniqueWords(arrayWords))
                     break;
                 }
                 case "6": {
-                    const output = Array.from(new Set(arrayWords))
-                    console.log(output.join(" "))
+                    console.log(getUniqueValuesOfWordsAndNumbers(arrayWords))
                     break;
                 }
                 case "exit":

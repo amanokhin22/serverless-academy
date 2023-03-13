@@ -1,28 +1,10 @@
 const TelegramWeatherApi = require("node-telegram-bot-api");
-const axios = require("axios");
-
+const getForecast = require('./api/forecast');
+const farToCelsius = require('./utils/farToCelsius');
 const TOKEN = process.env.TELEGRAM_TOKEN;
-const APP_ID = process.env.WEATHER_API_TOKEN;
+
 const CITY_NAME = 'Kharkiv';
-
 const bot = new TelegramWeatherApi(TOKEN, {polling: true});
-async function getForecast(interval) {
-    const res = await axios.get(`https://api.openweathermap.org/data/2.5/forecast?id=${706483}&appid=${APP_ID}`);
-    const list = res.data.list;
-    const forecast = [];
-    if (interval === 3) {
-        list.forEach(item => {
-            forecast.push(item);
-        })
-    }
-    list.forEach((item, index) => {
-        if (index % 2 === 0) {
-            forecast.push(item);
-        }
-    })
-
-    return forecast.slice(0, 10);
-}
 
 bot.setMyCommands([
     {command: "/start", description: "Initial greeting"},
@@ -36,7 +18,6 @@ bot.on('message', async (msg) => {
         await bot.sendMessage(chatId, `Greetings, my dear friend`);
     }
 })
-
 bot.on("message", (msg) => {
     const chatId = msg.chat.id;
     const text = msg.text;
@@ -56,7 +37,6 @@ bot.on("message", (msg) => {
             })
     }
 })
-
 bot.on('message', (msg) => {
     if (msg.text === `Weather`) {
         bot.sendMessage(msg.chat.id, 'Choose forecast time', {
@@ -79,7 +59,6 @@ bot.on('message', (msg) => {
         });
     }
 });
-
 bot.on('message', async (msg) => {
     let interval;
     if (msg.text === '3 hours') {
@@ -112,7 +91,3 @@ Wind speed: ${report.wind.speed} m/s`
         bot.sendMessage(msg.chat.id, data);
     }
 })
-
-function farToCelsius(farValue) {
-    return (farValue - 273.15).toFixed(2);
-}

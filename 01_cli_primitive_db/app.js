@@ -2,12 +2,6 @@ import inquirer from "inquirer";
 import * as fs from "fs";
 
 const DB_FILE = "db.txt";
-// It seems to work even without this code, creating a txt file and json in it, but I didn’t test deeply
-// const createDbIfNotExists = () => {
-//     if (!fs.existsSync(DB_FILE)) {
-//         fs.writeFileSync(DB_FILE, "");
-//     }
-// }
 const fillUsers = async () => {
     const EXIT_CONDITION = "";
     const user = await inquirer
@@ -53,9 +47,7 @@ const fillUsers = async () => {
         return fillUsers();
     }
 }
-
 const saveUsers = user => fs.appendFileSync(DB_FILE, JSON.stringify(user) + "\n");
-
 const confirmSearch = async () => inquirer.prompt([
     {
         type: "confirm",
@@ -63,12 +55,10 @@ const confirmSearch = async () => inquirer.prompt([
         message: "Would you to search values in DB? ",
     }
 ])
-
 const loadAllData = () => {
     const allFileContents = fs.readFileSync(DB_FILE, "utf-8");
     return allFileContents.split("\n").filter(row => row !== "").map(row => JSON.parse(row));
 }
-
 const getQueryString = async () => inquirer.prompt([
     {
         type: "input",
@@ -82,7 +72,6 @@ const getQueryString = async () => inquirer.prompt([
         }
     }
 ])
-
 const filterUsers = async () => {
     const allUsers = loadAllData();
     console.log(allUsers);
@@ -94,9 +83,7 @@ const filterUsers = async () => {
         console.log(filteredUsers);
     }
 }
-
 const appStart = async () => {
-    //createDbIfNotExists();
     await fillUsers();
 
     const {wantToSearchDB} = await confirmSearch();
@@ -105,6 +92,4 @@ const appStart = async () => {
     }
     await filterUsers();
 }
-
 appStart().then(() => process.exit(0));
-
